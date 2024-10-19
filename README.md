@@ -28,7 +28,7 @@ Before running the project, ensure you have the following installed:
 
     ```bash
     git clone https://github.com/ashutoshjha23/usage-tracker.git
-    cd cpu-gpu-usage-monitor
+    cd system-usage
     ```
 
 2. Install Python dependencies:
