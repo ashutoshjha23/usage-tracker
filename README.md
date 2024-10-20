@@ -1,49 +1,63 @@
 # usage-tracker
 
-This project is a web application that displays real-time CPU and GPU usage using a Python Flask backend and a React frontend. The CPU and GPU metrics are fetched from the system and displayed as interactive speedometers on the web interface.
+This web application monitors your CPU and GPU usage in real-time and displays the data in a visually appealing dashboard with speedometer-style gauges. The backend is built using Python (Flask) and the frontend is built using React. It also provides detailed system information about your CPU and GPU.
 
 ## Features
 
-- **Real-time Monitoring**: CPU and GPU usage are updated every second.
-- **Speedometer Visualization**: Utilization is visualized using speedometers with custom colors.
-- **CPU Metrics**: Displays CPU usage percentage, core count, and frequency.
-- **GPU Metrics**: Displays GPU usage percentage, total memory, free memory, and used memory.
+- **Real-time CPU usage monitoring** with core and thread information
+- **Real-time GPU usage monitoring**, including memory usage and load
+- Speedometer-style gauges to visualize usage
+- Responsive and intuitive dashboard interface
+- Built with Flask (backend) and React (frontend)
+
+## Technology Stack
+
+- **Backend**: Flask, psutil, GPUtil, threading
+- **Frontend**: React, axios, react-d3-speedometer
 
 ## Prerequisites
 
-Before running the project, ensure you have the following installed:
+Before you begin, ensure you have the following installed:
 
-- Python 3.x
-- Node.js
-- Flask
-- React
-- `psutil` (Python library)
-- `GPUtil` (Python library)
+- [Node.js](https://nodejs.org/) (for running the React frontend)
+- [Python](https://www.python.org/) (for running the Flask backend)
+- [pip](https://pip.pypa.io/en/stable/) (Python package installer)
+- [Flask](https://flask.palletsprojects.com/en/2.0.x/installation/)
+- [GPUtil](https://pypi.org/project/GPUtil/) (for GPU information retrieval)
 
 ## Installation
 
-### Backend (Flask)
+### Backend Setup (Flask + Python)
 
 1. Clone the repository:
 
     ```bash
     git clone https://github.com/ashutoshjha23/usage-tracker.git
-    cd system-usage
+    cd usage-tracker
     ```
 
-2. Install Python dependencies:
+2. Create and activate a virtual environment (optional but recommended):
+
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # 
+    ```
+
+3. Install the required Python packages:
 
     ```bash
     pip install -r requirements.txt
     ```
 
-3. Run the Flask backend:
+4. Run the Flask backend:
 
     ```bash
     python app.py
     ```
 
-### Frontend (React)
+The backend should now be running at `http://localhost:5000`.
+
+### Frontend Setup (React)
 
 1. Navigate to the `frontend` folder:
 
@@ -51,30 +65,20 @@ Before running the project, ensure you have the following installed:
     cd frontend
     ```
 
-2. Install dependencies:
+2. Install the dependencies:
 
     ```bash
     npm install
     ```
 
-3. Start the React frontend:
+3. Start the React development server:
 
     ```bash
     npm start
     ```
 
-## Project Structure
+The frontend should now be running at `http://localhost:3000`.
 
-```bash
-cpu-gpu-usage-monitor/
-├── app.py                    # Flask backend serving CPU and GPU usage data
-├── requirements.txt           # Backend dependencies (Flask, psutil, GPUtil, etc.)
-├── frontend/
-│   ├── public/                # Public assets
-│   ├── src/
-│   │   ├── components/
-│   │   │   └── GaugeDisplay.js # Component displaying CPU & GPU usage
-│   │   ├── App.js             # Main React app component
-│   │   ├── index.js           # React entry point
-│   ├── package.json           # Frontend dependencies
-├── README.md                  # Project documentation
+## Usage
+
+Once both the backend and frontend are running, open your browser and navigate to `http://localhost:3000`. The page will display real-time CPU and GPU usage with system details such as the CPU name, number of cores/threads, GPU name, memory usage, and more.
