@@ -10,7 +10,6 @@ import logging
 
 app = Flask(__name__)
 CORS(app)
-
 usage_data = {
     "cpu": 0,
     "gpu": 0,
