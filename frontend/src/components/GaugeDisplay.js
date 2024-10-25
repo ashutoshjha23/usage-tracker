@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Speedometer from "react-d3-speedometer";
+import './GaugeDisplay.css';
 
 const GaugeDisplay = () => {
     const [usage, setUsage] = useState({
@@ -27,18 +28,17 @@ const GaugeDisplay = () => {
     }, []);
 
     return (
-        <div style={{ backgroundColor: '#121212', color: 'white', padding: '40px', height: '100vh' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
-                {/* CPU Section */}
-                <div style={{ width: '45%', textAlign: 'center' }}>
-                    <h2 style={{ fontFamily: 'Arial, sans-serif', fontSize: '1.5em' }}>CPU Usage</h2>
+        <div className="gauge-display">
+            <div className="gauge-container">
+                <div className="gauge-section">
+                    <h2>CPU Usage</h2>
                     <Speedometer
                         maxValue={100}
                         value={usage.cpu}
                         needleColor="white"
                         startColor="#00FF00"
                         endColor="red"
-                        segments={1000} 
+                        segments={1000}
                         textColor="white"
                         needleHeightRatio={0.7}
                         currentValueText={`CPU Usage: ${usage.cpu}%`}
@@ -50,22 +50,21 @@ const GaugeDisplay = () => {
                         needleTransitionDuration={2000}
                         needleTransition="easeElastic"
                     />
-                    <p style={{ fontSize: '1em', fontWeight: '300' }}>CPU Name: {usage.cpu_details.cpu_name}</p>
-                    <p style={{ fontSize: '1em', fontWeight: '300' }}>Cores: {usage.cpu_details.cores}</p>
-                    <p style={{ fontSize: '1em', fontWeight: '300' }}>Threads: {usage.cpu_details.threads}</p>
-                    <p style={{ fontSize: '1em', fontWeight: '300' }}>Temperature: {usage.cpu_temperature}°C</p>
+                    <p>CPU Name: {usage.cpu_details.cpu_name}</p>
+                    <p>Cores: {usage.cpu_details.cores}</p>
+                    <p>Threads: {usage.cpu_details.threads}</p>
+                    <p>Temperature: {usage.cpu_temperature}°C</p>
                 </div>
 
-                {/* GPU Section */}
-                <div style={{ width: '45%', textAlign: 'center' }}>
-                    <h2 style={{ fontFamily: 'Arial, sans-serif', fontSize: '1.5em' }}>GPU Usage</h2>
+                <div className="gauge-section">
+                    <h2>GPU Usage</h2>
                     <Speedometer
                         maxValue={100}
                         value={usage.gpu}
                         needleColor="white"
                         startColor="#00FF00"
                         endColor="red"
-                        segments={1000} 
+                        segments={1000}
                         textColor="white"
                         needleHeightRatio={0.7}
                         currentValueText={`GPU Usage: ${usage.gpu}%`}
@@ -77,16 +76,15 @@ const GaugeDisplay = () => {
                         needleTransitionDuration={2000}
                         needleTransition="easeElastic"
                     />
-                    <p style={{ fontSize: '1em', fontWeight: '300' }}>GPU Name: {usage.gpu_details.gpu_name}</p>
-                    <p style={{ fontSize: '1em', fontWeight: '300' }}>Memory Total: {usage.gpu_details.memory_total} MB</p>
-                    <p style={{ fontSize: '1em', fontWeight: '300' }}>Memory Used: {usage.gpu_details.memory_used} MB</p>
-                    <p style={{ fontSize: '1em', fontWeight: '300' }}>Memory Free: {usage.gpu_details.memory_free} MB</p>
+                    <p>GPU Name: {usage.gpu_details.gpu_name}</p>
+                    <p>Memory Total: {usage.gpu_details.memory_total} MB</p>
+                    <p>Memory Used: {usage.gpu_details.memory_used} MB</p>
+                    <p>Memory Free: {usage.gpu_details.memory_free} MB</p>
                 </div>
             </div>
 
-            {/* Memory Section */}
-            <div style={{ marginTop: '40px', textAlign: 'center' }}>
-                <h2 style={{ fontFamily: 'Arial, sans-serif', fontSize: '1.5em' }}>Memory Usage</h2>
+            <div className="memory-section">
+                <h2>Memory Usage</h2>
                 <Speedometer
                     maxValue={100}
                     value={usage.memory_details.memory_percent}
@@ -105,9 +103,9 @@ const GaugeDisplay = () => {
                     needleTransitionDuration={2000}
                     needleTransition="easeElastic"
                 />
-                <p style={{ fontSize: '1em', fontWeight: '300' }}>Total Memory: {(usage.memory_details.total_memory / 1024 / 1024).toFixed(2)} MB</p>
-                <p style={{ fontSize: '1em', fontWeight: '300' }}>Used Memory: {(usage.memory_details.used_memory / 1024 / 1024).toFixed(2)} MB</p>
-                <p style={{ fontSize: '1em', fontWeight: '300' }}>Available Memory: {(usage.memory_details.available_memory / 1024 / 1024).toFixed(2)} MB</p>
+                <p>Total Memory: {(usage.memory_details.total_memory / 1024 / 1024).toFixed(2)} MB</p>
+                <p>Used Memory: {(usage.memory_details.used_memory / 1024 / 1024).toFixed(2)} MB</p>
+                <p>Available Memory: {(usage.memory_details.available_memory / 1024 / 1024).toFixed(2)} MB</p>
             </div>
         </div>
     );
