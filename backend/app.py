@@ -7,13 +7,12 @@ import time
 import platform
 import subprocess
 import logging
-import wmi 
-import pythoncom 
+import wmi
+import pythoncom
 
 app = Flask(__name__)
 CORS(app)
 
-# Data dictionary to store usage details
 usage_data = {
     "cpu": 0,
     "gpu": 0,
@@ -26,9 +25,6 @@ usage_data = {
 logging.basicConfig(level=logging.INFO)
 
 def get_cpu_details():
-    """
-    Retrieves CPU details such as name, core count, and thread count.
-    """
     cpu_info = {
         "cpu_name": "Unknown CPU",
         "cores": psutil.cpu_count(logical=False),
@@ -50,9 +46,6 @@ def get_cpu_details():
     return cpu_info
 
 def get_memory_details():
-    """
-    Retrieves system memory details.
-    """
     memory = psutil.virtual_memory()
     return {
         "total_memory": memory.total,
@@ -62,32 +55,27 @@ def get_memory_details():
     }
 
 def get_cpu_temperature():
-    """
-    Retrieves CPU temperature on Windows systems using WMI.
-    Returns 'Not Available' if the sensor is not available or OpenHardwareMonitor is not running.
-    """
     try:
         if platform.system() == "Windows":
-            pythoncom.CoInitialize()  # Initialize COM
+            pythoncom.CoInitialize()
             try:
                 w = wmi.WMI(namespace="root\\OpenHardwareMonitor")
                 temperature_info = w.Sensor()
                 for sensor in temperature_info:
                     if sensor.SensorType == 'Temperature' and "CPU" in sensor.Name:
-                        pythoncom.CoUninitialize()  # Uninitialize COM
+                        pythoncom.CoUninitialize()
                         return sensor.Value
             except wmi.x_wmi as e:
                 logging.error("OpenHardwareMonitor not available or not running. Error: %s", e)
                 return "OpenHardwareMonitor not running"
             finally:
-                pythoncom.CoUninitialize()  # Ensure COM is uninitialized
+                pythoncom.CoUninitialize()
         else:
-            # Use psutil method for other systems
             temps = psutil.sensors_temperatures()
             if "coretemp" in temps:
-                return temps["coretemp"][0].current  # Example for Linux
+                return temps["coretemp"][0].current
             elif "cpu_thermal" in temps:
-                return temps["cpu_thermal"][0].current  # Example for Raspberry Pi
+                return temps["cpu_thermal"][0].current
             else:
                 return "Temperature sensor not available"
     except Exception as e:
@@ -95,14 +83,10 @@ def get_cpu_temperature():
         return "Error fetching temperature"
 
 def get_active_gpu():
-    """
-    Retrieves the details of the GPU with the highest current load.
-    """
     try:
         gpus = GPUtil.getGPUs()
         if not gpus:
             return {"gpu_name": "No GPU detected", "memory_total": 0, "memory_used": 0, "memory_free": 0, "gpu_load": 0}
-
         active_gpu = max(gpus, key=lambda gpu: gpu.load)
         return {
             "gpu_name": active_gpu.name,
@@ -116,9 +100,6 @@ def get_active_gpu():
         return {"gpu_name": "Error", "memory_total": 0, "memory_used": 0, "memory_free": 0, "gpu_load": 0}
 
 def monitor_gpu_usage():
-    """
-    Continuously updates GPU usage in the background.
-    """
     while True:
         usage_data["gpu_details"] = get_active_gpu()
         usage_data["gpu"] = usage_data["gpu_details"].get("gpu_load", 0)
@@ -126,9 +107,6 @@ def monitor_gpu_usage():
 
 @app.route('/usage', methods=['GET'])
 def get_usage():
-    """
-    API endpoint to get current CPU, GPU, memory, and temperature usage.
-    """
     try:
         usage_data["cpu"] = psutil.cpu_percent(interval=1)
         usage_data["cpu_details"] = get_cpu_details()
@@ -137,11 +115,9 @@ def get_usage():
     except Exception as e:
         logging.error(f"Error getting CPU or memory usage: {e}")
         usage_data["cpu"] = -1
-    
     return jsonify(usage_data)
 
 if __name__ == '__main__':
     gpu_thread = threading.Thread(target=monitor_gpu_usage, daemon=True)
     gpu_thread.start()
-
     app.run(debug=True, host='0.0.0.0', port=5000)
