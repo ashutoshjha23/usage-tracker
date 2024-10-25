@@ -7,14 +7,20 @@ import time
 import platform
 import subprocess
 import logging
+import wmi 
+import pythoncom 
 
 app = Flask(__name__)
 CORS(app)
+
+# Data dictionary to store usage details
 usage_data = {
     "cpu": 0,
     "gpu": 0,
     "cpu_details": {},
-    "gpu_details": {}
+    "gpu_details": {},
+    "memory_details": {},
+    "cpu_temperature": "Not Available"
 }
 
 logging.basicConfig(level=logging.INFO)
@@ -42,6 +48,51 @@ def get_cpu_details():
     except subprocess.SubprocessError as e:
         logging.error(f"Error getting CPU name: {e}")
     return cpu_info
+
+def get_memory_details():
+    """
+    Retrieves system memory details.
+    """
+    memory = psutil.virtual_memory()
+    return {
+        "total_memory": memory.total,
+        "used_memory": memory.used,
+        "available_memory": memory.available,
+        "memory_percent": memory.percent
+    }
+
+def get_cpu_temperature():
+    """
+    Retrieves CPU temperature on Windows systems using WMI.
+    Returns 'Not Available' if the sensor is not available or OpenHardwareMonitor is not running.
+    """
+    try:
+        if platform.system() == "Windows":
+            pythoncom.CoInitialize()  # Initialize COM
+            try:
+                w = wmi.WMI(namespace="root\\OpenHardwareMonitor")
+                temperature_info = w.Sensor()
+                for sensor in temperature_info:
+                    if sensor.SensorType == 'Temperature' and "CPU" in sensor.Name:
+                        pythoncom.CoUninitialize()  # Uninitialize COM
+                        return sensor.Value
+            except wmi.x_wmi as e:
+                logging.error("OpenHardwareMonitor not available or not running. Error: %s", e)
+                return "OpenHardwareMonitor not running"
+            finally:
+                pythoncom.CoUninitialize()  # Ensure COM is uninitialized
+        else:
+            # Use psutil method for other systems
+            temps = psutil.sensors_temperatures()
+            if "coretemp" in temps:
+                return temps["coretemp"][0].current  # Example for Linux
+            elif "cpu_thermal" in temps:
+                return temps["cpu_thermal"][0].current  # Example for Raspberry Pi
+            else:
+                return "Temperature sensor not available"
+    except Exception as e:
+        logging.error(f"Error fetching CPU temperature: {e}")
+        return "Error fetching temperature"
 
 def get_active_gpu():
     """
@@ -76,13 +127,15 @@ def monitor_gpu_usage():
 @app.route('/usage', methods=['GET'])
 def get_usage():
     """
-    API endpoint to get current CPU and GPU usage.
+    API endpoint to get current CPU, GPU, memory, and temperature usage.
     """
     try:
         usage_data["cpu"] = psutil.cpu_percent(interval=1)
         usage_data["cpu_details"] = get_cpu_details()
+        usage_data["memory_details"] = get_memory_details()
+        usage_data["cpu_temperature"] = get_cpu_temperature()
     except Exception as e:
-        logging.error(f"Error getting CPU usage: {e}")
+        logging.error(f"Error getting CPU or memory usage: {e}")
         usage_data["cpu"] = -1
     
     return jsonify(usage_data)
