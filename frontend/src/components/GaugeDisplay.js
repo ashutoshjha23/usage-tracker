@@ -47,8 +47,8 @@ const GaugeDisplay = () => {
                         labelFontSize="14px"
                         customSegmentStops={[0, 20, 40, 60, 80, 100]}
                         forceRender={true}
-                        needleTransitionDuration={2000}
-                        needleTransition="easeElastic"
+                        needleTransitionDuration={1500}  
+                        needleTransition="easeElastic"  
                     />
                     <p>CPU Name: {usage.cpu_details.cpu_name}</p>
                     <p>Cores: {usage.cpu_details.cores}</p>
@@ -73,8 +73,8 @@ const GaugeDisplay = () => {
                         labelFontSize="14px"
                         customSegmentStops={[0, 20, 40, 60, 80, 100]}
                         forceRender={true}
-                        needleTransitionDuration={2000}
-                        needleTransition="easeElastic"
+                        needleTransitionDuration={1500}  
+                        needleTransition="easeElastic"  
                     />
                     <p>GPU Name: {usage.gpu_details.gpu_name}</p>
                     <p>Memory Total: {usage.gpu_details.memory_total} MB</p>
@@ -100,8 +100,8 @@ const GaugeDisplay = () => {
                     labelFontSize="14px"
                     customSegmentStops={[0, 20, 40, 60, 80, 100]}
                     forceRender={true}
-                    needleTransitionDuration={2000}
-                    needleTransition="easeElastic"
+                    needleTransitionDuration={1500}  
+                    needleTransition="easeElastic"  
                 />
                 <p>Total Memory: {(usage.memory_details.total_memory / 1024 / 1024).toFixed(2)} MB</p>
                 <p>Used Memory: {(usage.memory_details.used_memory / 1024 / 1024).toFixed(2)} MB</p>

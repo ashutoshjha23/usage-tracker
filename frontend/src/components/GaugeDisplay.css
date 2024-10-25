@@ -3,9 +3,6 @@
     color: white;
     padding: 40px;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .gauge-container {
@@ -22,4 +19,8 @@
 .memory-section {
     margin-top: 40px;
     text-align: center;
+}
+
+.chart-container {
+    margin-top: 40px;
 }
