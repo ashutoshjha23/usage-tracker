@@ -1,14 +1,14 @@
 # usage-tracker
 
-This web application monitors your CPU and GPU usage in real-time and displays the data in a visually appealing dashboard with speedometer-style gauges. The backend is built using Python (Flask) and the frontend is built using React. It also provides detailed system information about your CPU and GPU.
+A real-time system usage monitor built with Flask for the backend and React for the frontend. This application tracks and displays CPU, GPU, and memory usage, along with temperature details, providing users with a comprehensive view of their system's performance.
 
 ## Features
 
-- **Real-time CPU usage monitoring** with core and thread information
-- **Real-time GPU usage monitoring**, including memory usage and load
-- Speedometer-style gauges to visualize usage
-- Responsive and intuitive dashboard interface
-- Built with Flask (backend) and React (frontend)
+- Real-time monitoring of CPU, GPU, and memory usage
+- Display of detailed CPU information (name, cores, threads, and temperature)
+- Display of GPU details (name, memory usage, and free memory)
+- Responsive and user-friendly interface with visual gauges
+- Data fetched from a Flask API
 
 ## Technology Stack
 
@@ -24,6 +24,7 @@ Before you begin, ensure you have the following installed:
 - [pip](https://pip.pypa.io/en/stable/) (Python package installer)
 - [Flask](https://flask.palletsprojects.com/en/2.0.x/installation/)
 - [GPUtil](https://pypi.org/project/GPUtil/) (for GPU information retrieval)
+- [OpenHardwareMonitor](https://openhardwaremonitor.org) (for Windows users)
 
 ## Installation
 
