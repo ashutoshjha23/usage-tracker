@@ -24,3 +24,27 @@
 .chart-container {
     margin-top: 40px;
 }
+.gauge-section p,
+.memory-section p {
+    margin-top: -12px;
+}
+
+.gauge-section h2,
+.memory-section h2 {
+    margin-bottom: 5px; 
+}
+
+.gauge-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.gauge-display .gauge-section, .memory-section {
+    text-align: center;
+    color: white;
+}
+
+.current-value-text {
+    transform: translateY(-10px); 
+}
