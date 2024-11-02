@@ -12,12 +12,10 @@ const UsageDisplay = () => {
             console.error('Error fetching usage data:', error);
         }
     };
-
     useEffect(() => {
         const interval = setInterval(fetchUsage, 1000);
         return () => clearInterval(interval);  
     }, []);
-
     return (
         <div>
             <h1>CPU and GPU Usage</h1>
