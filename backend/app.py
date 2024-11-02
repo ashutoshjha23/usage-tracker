@@ -108,7 +108,7 @@ def monitor_gpu_usage():
 @app.route('/usage', methods=['GET'])
 def get_usage():
     try:
-        usage_data["cpu"] = psutil.cpu_percent(interval=2)
+        usage_data["cpu"] = psutil.cpu_percent(interval=1)
         usage_data["cpu_details"] = get_cpu_details()
         usage_data["memory_details"] = get_memory_details()
         usage_data["cpu_temperature"] = get_cpu_temperature()
