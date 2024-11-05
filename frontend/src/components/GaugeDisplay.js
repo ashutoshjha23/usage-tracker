@@ -66,7 +66,7 @@ const GaugeDisplay = () => {
                         endColor="red"
                         segments={1000}
                         textColor="white"
-                        needleHeightRatio={0.7}
+                        needleHeightRatio={0.6}
                         currentValueText={`GPU Usage: ${usage.gpu}%`}
                         ringWidth={20}
                         valueTextFontSize="22px"
