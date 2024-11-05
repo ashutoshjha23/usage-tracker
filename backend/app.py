@@ -73,7 +73,7 @@ def get_cpu_temperature():
         else:
             temps = psutil.sensors_temperatures()
             if "coretemp" in temps:
-                return temps["coretemp"][2].current
+                return temps["coretemp"][0].current
             elif "cpu_thermal" in temps:
                 return temps["cpu_thermal"][0].current
             else:
