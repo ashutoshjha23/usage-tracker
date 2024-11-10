@@ -85,29 +85,20 @@ const GaugeDisplay = () => {
             </div>
 
             <div className="memory-section">
-                <h2>Memory Usage</h2>
-                <Speedometer
-                    maxValue={100}
-                    value={usage.memory_details.memory_percent}
-                    needleColor="white"
-                    startColor="#00FF00"
-                    endColor="red"
-                    segments={1000}
-                    textColor="white"
-                    needleHeightRatio={0.7}
-                    currentValueText={`Memory Usage: ${usage.memory_details.memory_percent}%`}
-                    ringWidth={20}
-                    valueTextFontSize="22px"
-                    labelFontSize="14px"
-                    customSegmentStops={[0, 20, 40, 60, 80, 100]}
-                    forceRender={true}
-                    needleTransitionDuration={1500}  
-                    needleTransition="easeElastic"  
-                />
-                <p>Total Memory: {(usage.memory_details.total_memory / 1024 / 1024).toFixed(2)} MB</p>
-                <p>Used Memory: {(usage.memory_details.used_memory / 1024 / 1024).toFixed(2)} MB</p>
-                <p>Available Memory: {(usage.memory_details.available_memory / 1024 / 1024).toFixed(2)} MB</p>
-            </div>
+    <h2>Memory Usage</h2>
+    <div className="progress-bar-container">
+        <div
+            className="progress-bar"
+            style={{ width: `${usage.memory_details.memory_percent}%` }}
+        >
+            {usage.memory_details.memory_percent}%
+        </div>
+    </div>
+    <p>Total Memory: {(usage.memory_details.total_memory / 1024 / 1024).toFixed(2)} MB</p>
+    <p>Used Memory: {(usage.memory_details.used_memory / 1024 / 1024).toFixed(2)} MB</p>
+    <p>Available Memory: {(usage.memory_details.available_memory / 1024 / 1024).toFixed(2)} MB</p>
+</div>
+
 
             <div className="internet-section">
                 <h2>Internet Usage</h2>
