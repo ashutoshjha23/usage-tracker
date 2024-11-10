@@ -10,7 +10,8 @@ const GaugeDisplay = () => {
         cpu_details: { cpu_name: "", cores: 0, threads: 0 },
         gpu_details: { gpu_name: "", memory_total: 0, memory_used: 0, memory_free: 0 },
         memory_details: { total_memory: 0, used_memory: 0, available_memory: 0, memory_percent: 0 },
-        cpu_temperature: "Not Available"
+        cpu_temperature: "Not Available",
+        internet_usage: { upload_speed: 0, download_speed: 0 }
     });
 
     const fetchUsage = async () => {
@@ -106,6 +107,12 @@ const GaugeDisplay = () => {
                 <p>Total Memory: {(usage.memory_details.total_memory / 1024 / 1024).toFixed(2)} MB</p>
                 <p>Used Memory: {(usage.memory_details.used_memory / 1024 / 1024).toFixed(2)} MB</p>
                 <p>Available Memory: {(usage.memory_details.available_memory / 1024 / 1024).toFixed(2)} MB</p>
+            </div>
+
+            <div className="internet-section">
+                <h2>Internet Usage</h2>
+                <p>Download Speed: {usage.internet_usage.download_speed.toFixed(2)} KB/s</p>
+                <p>Upload Speed: {usage.internet_usage.upload_speed.toFixed(2)} KB/s</p>
             </div>
         </div>
     );
