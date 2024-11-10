@@ -19,7 +19,8 @@ usage_data = {
     "cpu_details": {},
     "gpu_details": {},
     "memory_details": {},
-    "cpu_temperature": "Not Available"
+    "cpu_temperature": "Not Available",
+    "internet_usage": {"upload_speed": 0, "download_speed": 0}
 }
 
 logging.basicConfig(level=logging.INFO)
@@ -105,6 +106,15 @@ def monitor_gpu_usage():
         usage_data["gpu"] = usage_data["gpu_details"].get("gpu_load", 0)
         time.sleep(1)
 
+def monitor_internet_usage():
+    last_counters = psutil.net_io_counters()
+    while True:
+        time.sleep(1)
+        counters = psutil.net_io_counters()
+        usage_data["internet_usage"]["download_speed"] = (counters.bytes_recv - last_counters.bytes_recv) / 1024
+        usage_data["internet_usage"]["upload_speed"] = (counters.bytes_sent - last_counters.bytes_sent) / 1024
+        last_counters = counters
+
 @app.route('/usage', methods=['GET'])
 def get_usage():
     try:
@@ -119,5 +129,7 @@ def get_usage():
 
 if __name__ == '__main__':
     gpu_thread = threading.Thread(target=monitor_gpu_usage, daemon=True)
+    internet_thread = threading.Thread(target=monitor_internet_usage, daemon=True)
     gpu_thread.start()
+    internet_thread.start()
     app.run(debug=True, host='0.0.0.0', port=5000)
